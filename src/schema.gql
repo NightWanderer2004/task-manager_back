@@ -1,0 +1,61 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Task {
+  category: Category!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  dateCreated: DateTime!
+  userId: Int!
+  user: User!
+  tasks: [Task!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: ID!
+  email: String!
+  password: String!
+  role: String!
+  categories: [Category!]!
+}
+
+type Query {
+  users: [User!]!
+  categories: [Category!]!
+  tasks: [Task!]!
+  task(id: Float!): Task!
+}
+
+type Mutation {
+  createUser(createUserDto: CreatUserDto!): User!
+  createCategory(input: CreateCategoryDto!): Category!
+  createTask(input: CreateTaskDto!, categoryId: Float!): Task!
+}
+
+input CreatUserDto {
+  email: String!
+  password: String!
+  role: String!
+}
+
+input CreateCategoryDto {
+  name: String!
+  dateCreated: DateTime!
+  userId: Int!
+}
+
+input CreateTaskDto {
+  name: String!
+  dateStart: DateTime!
+  dateEnd: DateTime!
+  taskId: Float!
+}

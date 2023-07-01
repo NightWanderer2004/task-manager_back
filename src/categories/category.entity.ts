@@ -1,5 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, Timestamp } from 'typeorm'
-import { ObjectType, Field, ID } from 'type-graphql'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm'
+import { Task } from '../tasks/task.entity'
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
+import { User } from 'src/users/user.entity'
 
 @Entity()
 @ObjectType()
@@ -14,9 +22,17 @@ export class Category {
 
   @Column()
   @Field()
-  dateCreated: string
+  dateCreated: Date
 
   @Column()
-  @Field()
+  @Field(() => Int)
   userId: number
+
+  @ManyToOne(() => User, (user) => user.categories)
+  @Field(() => User)
+  user: User
+
+  @OneToMany(() => Task, (task) => task.category)
+  @Field(() => [Task])
+  tasks: Task[]
 }
