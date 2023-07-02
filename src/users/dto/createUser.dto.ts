@@ -9,7 +9,7 @@ import {
 } from 'class-validator'
 
 @InputType()
-export class CreatUserDto {
+export class CreateUserDto {
   @IsEmail()
   @Field()
   email: string

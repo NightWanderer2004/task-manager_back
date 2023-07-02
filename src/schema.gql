@@ -28,9 +28,14 @@ type Category {
 type User {
   id: ID!
   email: String!
-  password: String!
+  password: String
   role: String!
   categories: [Category!]!
+}
+
+type LoginResponse {
+  token: String!
+  user: User!
 }
 
 type Query {
@@ -40,16 +45,18 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: CreatUserDto!): User!
+  createUser(input: CreateUserDto!): User!
   createCategory(input: CreateCategoryDto!): Category!
   updateCategory(id: Float!, input: CreateCategoryDto!): Category!
   deleteCategory(id: Float!): Category!
   createTask(input: CreateTaskDto!): Task!
   updateTask(id: Float!, input: CreateTaskDto!): Task!
   deleteTask(id: Float!): Task!
+  login(loginUser: LoginUser!): LoginResponse!
+  signup(signupUser: CreateUserDto!): User!
 }
 
-input CreatUserDto {
+input CreateUserDto {
   email: String!
   password: String!
   role: String!
@@ -66,4 +73,9 @@ input CreateTaskDto {
   dateStart: DateTime!
   dateEnd: DateTime!
   taskId: Int
+}
+
+input LoginUser {
+  email: String!
+  password: String!
 }

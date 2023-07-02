@@ -12,6 +12,8 @@ import { CreateCategoryDto } from './dto/createCategory.dto'
 import { TasksService } from '../tasks/tasks.service'
 import { Task } from '../tasks/task.entity'
 import { User } from 'src/users/user.entity'
+import { UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from 'src/auth/guards/jwtAuth.guard'
 
 @Resolver(() => Category)
 export class CategoriesResolver {
@@ -20,6 +22,7 @@ export class CategoriesResolver {
     private readonly tasksService: TasksService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Category)
   async createCategory(
     @Args('input') input: CreateCategoryDto,
@@ -27,6 +30,7 @@ export class CategoriesResolver {
     return await this.categoriesService.createCategory(input)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Category)
   async updateCategory(
     @Args('id') id: number,
@@ -35,6 +39,7 @@ export class CategoriesResolver {
     return await this.categoriesService.updateCategory(id, input)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Category)
   async deleteCategory(@Args('id') id: number): Promise<Category> {
     return await this.categoriesService.deleteCategory(id)
