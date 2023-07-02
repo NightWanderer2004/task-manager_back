@@ -20,13 +20,13 @@ export class Category {
   @Field()
   name: string
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field()
   dateCreated: Date
 
   @Column()
-  @Field(() => Int)
-  userId: number
+  @Field(() => Int, { nullable: true })
+  userId?: number
 
   @ManyToOne(() => User, (user) => user.categories)
   @Field(() => User)

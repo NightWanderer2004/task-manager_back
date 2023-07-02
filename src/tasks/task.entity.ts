@@ -1,29 +1,28 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 import { Category } from '../categories/category.entity'
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 
 @Entity()
 @ObjectType()
 export class Task {
   @PrimaryGeneratedColumn()
+  @Field(() => ID)
   id: number
 
   @Column()
+  @Field()
   name: string
 
-  //   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  //   createdAt: Date
-
-  //   @Column({ type: 'timestamp', nullable: true })
-  //   endDate: Date
-
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Field()
   dateStart: Date
 
-  @Column()
+  @Column({ type: 'timestamp', nullable: true })
+  @Field()
   dateEnd: Date
 
   @Column()
+  @Field()
   taskId: number
 
   @ManyToOne(() => Category, (category) => category.tasks)

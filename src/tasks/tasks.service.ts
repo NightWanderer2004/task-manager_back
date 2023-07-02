@@ -20,26 +20,29 @@ export class TasksService {
     return this.taskRepository.find()
   }
 
-  async getTaskById(id: number): Promise<Task> {
-    return this.taskRepository.findOne({ where: { id } })
+  async getByCategoryId(taskId: number): Promise<Task[]> {
+    return this.taskRepository.find({ where: { taskId } })
   }
 
-  async getTaskByCategoryId(categoryId: number): Promise<Category> {
-    return this.categoriesService.getCategoryById(categoryId)
+  async getCategoryId(categoryId: number): Promise<Category> {
+    return this.categoriesService.getById(categoryId)
   }
 
-  async getTasksByCategoryId(categoryId: number): Promise<Task[]> {
-    return this.taskRepository
-      .createQueryBuilder('task')
-      .where('task.categoryId = :categoryId', { categoryId })
-      .getMany()
-  }
-
-  async createTask(input: CreateTaskDto, categoryId: number): Promise<Task> {
-    const task = this.taskRepository.create({
-      ...input,
-      taskId: categoryId,
-    })
+  async createTask(input: CreateTaskDto): Promise<Task> {
+    const task = this.taskRepository.create(input)
     return this.taskRepository.save(task)
+  }
+
+  async updateTask(id: number, input: CreateTaskDto): Promise<Task> {
+    const task = await this.taskRepository.findOne({ where: { id } })
+    task.name = input.name
+    task.dateStart = input.dateStart
+    task.dateEnd = input.dateEnd
+    return this.taskRepository.save(task)
+  }
+
+  async deleteTask(id: number): Promise<Task> {
+    const task = await this.taskRepository.findOne({ where: { id } })
+    return this.taskRepository.remove(task)
   }
 }

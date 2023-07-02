@@ -18,20 +18,35 @@ export class CategoriesService {
     return this.categoryRepository.find()
   }
 
-  async getCategoryById(id: number): Promise<Category> {
+  async getById(id: number): Promise<Category> {
     return this.categoryRepository.findOne({ where: { id } })
   }
 
-  async getCategoryByName(name: string): Promise<Category> {
-    return this.categoryRepository.findOne({ where: { name } })
+  async getByUserId(userId: number): Promise<Category[]> {
+    return this.categoryRepository.find({ where: { userId } })
   }
 
   async getUserId(userId: number): Promise<User> {
-    return this.usersService.findById(userId)
+    return this.usersService.getById(userId)
   }
 
   async createCategory(input: CreateCategoryDto): Promise<Category> {
     const category = this.categoryRepository.create(input)
     return this.categoryRepository.save(category)
+  }
+
+  async updateCategory(
+    id: number,
+    input: CreateCategoryDto,
+  ): Promise<Category> {
+    const category = await this.categoryRepository.findOne({ where: { id } })
+    category.name = input.name
+    category.dateCreated = input.dateCreated
+    return this.categoryRepository.save(category)
+  }
+
+  async deleteCategory(id: number): Promise<Category> {
+    const category = await this.categoryRepository.findOne({ where: { id } })
+    return this.categoryRepository.remove(category)
   }
 }

@@ -3,22 +3,27 @@
 # ------------------------------------------------------
 
 type Task {
-  category: Category!
-}
-
-type Category {
   id: ID!
   name: String!
-  dateCreated: DateTime!
-  userId: Int!
-  user: User!
-  tasks: [Task!]!
+  dateStart: DateTime!
+  dateEnd: DateTime!
+  taskId: Float!
+  category: Category!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Category {
+  id: ID!
+  name: String!
+  dateCreated: DateTime!
+  userId: Int
+  user: User!
+  tasks: [Task!]!
+}
 
 type User {
   id: ID!
@@ -32,13 +37,16 @@ type Query {
   users: [User!]!
   categories: [Category!]!
   tasks: [Task!]!
-  task(id: Float!): Task!
 }
 
 type Mutation {
-  createUser(createUserDto: CreatUserDto!): User!
+  createUser(input: CreatUserDto!): User!
   createCategory(input: CreateCategoryDto!): Category!
-  createTask(input: CreateTaskDto!, categoryId: Float!): Task!
+  updateCategory(id: Float!, input: CreateCategoryDto!): Category!
+  deleteCategory(id: Float!): Category!
+  createTask(input: CreateTaskDto!): Task!
+  updateTask(id: Float!, input: CreateTaskDto!): Task!
+  deleteTask(id: Float!): Task!
 }
 
 input CreatUserDto {
@@ -50,12 +58,12 @@ input CreatUserDto {
 input CreateCategoryDto {
   name: String!
   dateCreated: DateTime!
-  userId: Int!
+  userId: Int
 }
 
 input CreateTaskDto {
   name: String!
   dateStart: DateTime!
   dateEnd: DateTime!
-  taskId: Float!
+  taskId: Int
 }

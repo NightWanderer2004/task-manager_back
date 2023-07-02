@@ -1,9 +1,16 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { IsDate, IsNumber, IsString } from 'class-validator'
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator'
 
 @InputType()
 export class CreateCategoryDto {
   @IsString()
+  @IsNotEmpty()
   @Field()
   name: string
 
@@ -12,6 +19,7 @@ export class CreateCategoryDto {
   dateCreated: Date
 
   @IsNumber()
-  @Field(() => Int)
-  userId: number
+  @IsOptional()
+  @Field(() => Int, { nullable: true })
+  userId?: number
 }

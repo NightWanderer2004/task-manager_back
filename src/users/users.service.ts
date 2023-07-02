@@ -15,17 +15,17 @@ export class UsersService {
     return this.userRepository.find()
   }
 
-  async findByEmail(email: string): Promise<User | undefined> {
+  async getByEmail(email: string): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { email } })
   }
 
-  async findById(id: number): Promise<User | undefined> {
+  async getById(id: number): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { id } })
   }
 
-  async findByRole(role: Role): Promise<User[]> {
-    return this.userRepository.find({ where: { role } })
-  }
+  // async getByRole(role: Role): Promise<User[]> {
+  //   return this.userRepository.find({ where: { role } })
+  // }
 
   async createUser(input: CreatUserDto): Promise<User> {
     const user = this.userRepository.create(input)

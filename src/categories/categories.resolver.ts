@@ -23,9 +23,21 @@ export class CategoriesResolver {
   @Mutation(() => Category)
   async createCategory(
     @Args('input') input: CreateCategoryDto,
-    // @Args('userId') userId: number,
   ): Promise<Category> {
-    return await this.categoriesService.createCategory(input /*userId*/)
+    return await this.categoriesService.createCategory(input)
+  }
+
+  @Mutation(() => Category)
+  async updateCategory(
+    @Args('id') id: number,
+    @Args('input') input: CreateCategoryDto,
+  ): Promise<Category> {
+    return await this.categoriesService.updateCategory(id, input)
+  }
+
+  @Mutation(() => Category)
+  async deleteCategory(@Args('id') id: number): Promise<Category> {
+    return await this.categoriesService.deleteCategory(id)
   }
 
   @Query(() => [Category])
@@ -35,13 +47,11 @@ export class CategoriesResolver {
 
   @ResolveField(() => User)
   async user(@Parent() category: Category): Promise<User> {
-    const { userId } = category
-    return await this.categoriesService.getUserId(userId)
+    return await this.categoriesService.getUserId(category.userId)
   }
 
   @ResolveField(() => [Task])
   async tasks(@Parent() category: Category): Promise<Task[]> {
-    const { id } = category
-    return await this.tasksService.getTasksByCategoryId(id)
+    return await this.tasksService.getByCategoryId(category.id)
   }
 }
