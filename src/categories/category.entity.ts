@@ -4,6 +4,8 @@ import {
   Column,
   OneToMany,
   ManyToOne,
+  Timestamp,
+  CreateDateColumn,
 } from 'typeorm'
 import { Task } from '../tasks/task.entity'
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
@@ -20,7 +22,7 @@ export class Category {
   @Field()
   name: string
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp' })
   @Field()
   dateCreated: Date
 

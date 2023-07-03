@@ -10,7 +10,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { join } from 'path'
 import { CategoriesModule } from './categories/categories.module'
 import { TasksModule } from './tasks/tasks.module'
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -27,6 +27,9 @@ import { AuthModule } from './auth/auth.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       driver: ApolloDriver,
+      buildSchemaOptions: {
+        dateScalarMode: 'timestamp',
+      },
     }),
     UsersModule,
     CategoriesModule,
