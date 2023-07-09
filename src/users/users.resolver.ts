@@ -26,7 +26,13 @@ export class UsersResolver {
   async users(): Promise<User[]> {
     return await this.usersService.getUsers()
   }
-  
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => User)
+  async user(@Args('id') id: number): Promise<User> {
+    return await this.usersService.getById(id)
+  }
+
   @ResolveField(() => [Category])
   async categories(@Parent() user: User): Promise<Category[]> {
     return await this.categoryService.getByUserId(user.id)

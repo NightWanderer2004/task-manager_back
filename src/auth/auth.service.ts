@@ -6,6 +6,7 @@ import { LoginResponse } from './dto/loginResponse.dto'
 import { LoginUser } from './dto/loginUser.dto'
 import { CreateUserDto } from 'src/users/dto/createUser.dto'
 import * as bcrypt from 'bcryptjs'
+import { Token } from './dto/token.dto'
 
 @Injectable()
 export class AuthService {
@@ -26,6 +27,38 @@ export class AuthService {
     return null
   }
 
+  async refreshToken(refreshToken: string): Promise<Token | null> {
+    const user = this.verifyRefreshToken(refreshToken)
+    if (!user) throw new Error('Invalid refresh token')
+
+    const accessToken = this.generateAccessToken(user)
+    const newRefreshToken = this.generateRefreshToken(user)
+
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+      expiresIn: this.jwtService.decode(accessToken)['exp'],
+    }
+  }
+
+  private verifyRefreshToken(refreshToken: string) {
+    try {
+      return this.jwtService.verify(refreshToken)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  private generateAccessToken(user: User) {
+    const payload = { email: user.email, sub: user.id }
+    return this.jwtService.sign(payload, { expiresIn: '1h' })
+  }
+
+  private generateRefreshToken(user: User) {
+    const payload = { email: user.email, sub: user.id }
+    return this.jwtService.sign(payload, { expiresIn: '1d' })
+  }
+
   async login(loginUser: LoginUser): Promise<LoginResponse | null> {
     const user = await this.usersService.getByEmail(loginUser.email)
     if (user) {
@@ -43,6 +76,7 @@ export class AuthService {
     if (user) throw new Error('User already exists')
 
     const password = await bcrypt.hash(signupUser.password, 10)
+    signupUser.password = password
 
     return this.usersService.createUser(signupUser)
   }

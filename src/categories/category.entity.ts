@@ -23,8 +23,8 @@ export class Category {
   name: string
 
   @CreateDateColumn({ type: 'timestamp' })
-  @Field()
-  dateCreated: Date
+  @Field({ nullable: true })
+  dateCreated?: Date;
 
   @Column()
   @Field(() => Int, { nullable: true })

@@ -1,6 +1,7 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
 import {
   IsDate,
+  IsDateString,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -14,13 +15,13 @@ export class CreateTaskDto {
   @Field()
   name: string
 
-  @IsDate()
+  @IsDateString()
   @Field()
-  dateStart: Date
+  dateStart: string
 
-  @IsDate()
+  @IsDateString()
   @Field()
-  dateEnd: Date
+  dateEnd: string
 
   @IsNumber()
   @IsOptional()

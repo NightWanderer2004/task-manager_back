@@ -45,9 +45,16 @@ export class CategoriesResolver {
     return await this.categoriesService.deleteCategory(id)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => [Category])
   async categories(): Promise<Category[]> {
     return await this.categoriesService.getCategories()
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => Category)
+  async category(@Args('id') id: number): Promise<Category> {
+    return await this.categoriesService.getById(id)
   }
 
   @ResolveField(() => User)

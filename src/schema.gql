@@ -5,25 +5,25 @@
 type Task {
   id: ID!
   name: String!
-  dateStart: Timestamp!
-  dateEnd: Timestamp!
+  dateStart: String!
+  dateEnd: String!
   taskId: Float!
   category: Category!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  dateCreated: Timestamp
+  userId: Int
+  user: User!
+  tasks: [Task!]!
 }
 
 """
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
 scalar Timestamp
-
-type Category {
-  id: ID!
-  name: String!
-  dateCreated: Timestamp!
-  userId: Int
-  user: User!
-  tasks: [Task!]!
-}
 
 type User {
   id: ID!
@@ -38,9 +38,17 @@ type LoginResponse {
   user: User!
 }
 
+type Token {
+  accessToken: String!
+  refreshToken: String!
+  expiresIn: Int!
+}
+
 type Query {
   users: [User!]!
+  user(id: Float!): User!
   categories: [Category!]!
+  category(id: Float!): Category!
   tasks: [Task!]!
 }
 
@@ -53,6 +61,7 @@ type Mutation {
   updateTask(id: Float!, input: CreateTaskDto!): Task!
   deleteTask(id: Float!): Task!
   login(loginUser: LoginUser!): LoginResponse!
+  refreshToken(refreshToken: String!): Token!
   signup(signupUser: CreateUserDto!): User!
 }
 
@@ -64,14 +73,14 @@ input CreateUserDto {
 
 input CreateCategoryDto {
   name: String!
-  dateCreated: Timestamp!
+  dateCreated: Timestamp
   userId: Int
 }
 
 input CreateTaskDto {
   name: String!
-  dateStart: Timestamp!
-  dateEnd: Timestamp!
+  dateStart: String!
+  dateEnd: String!
   taskId: Int
 }
 

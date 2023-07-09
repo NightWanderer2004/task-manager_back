@@ -15,8 +15,9 @@ export class CreateCategoryDto {
   name: string
 
   @IsDate()
-  @Field()
-  dateCreated: Date
+  @IsOptional()
+  @Field({ nullable: true })
+  dateCreated?: Date
 
   @IsNumber()
   @IsOptional()

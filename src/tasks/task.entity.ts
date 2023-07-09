@@ -13,13 +13,13 @@ export class Task {
   @Field()
   name: string
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'date', nullable: true })
   @Field()
-  dateStart: Date
+  dateStart: string
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'date', nullable: true })
   @Field()
-  dateEnd: Date
+  dateEnd: string
 
   @Column()
   @Field()
