@@ -44,6 +44,11 @@ export class TasksResolver {
     return this.tasksService.getTasks()
   }
 
+  @Query(() => [Task])
+  async tasksByCategoryId(@Args('id') id: number): Promise<Task[]> {
+    return this.tasksService.getByCategoryId(id)
+  }
+
   @ResolveField()
   async category(@Parent() task: Task): Promise<Category> {
     return await this.tasksService.getCategoryId(task.taskId)

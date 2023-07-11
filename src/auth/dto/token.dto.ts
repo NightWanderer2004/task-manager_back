@@ -13,4 +13,7 @@ export class Token {
 
   @Field(() => Int)
   expiresIn: number | string
+
+  @Field({ nullable: true })
+  userId?: string
 }

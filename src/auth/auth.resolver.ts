@@ -7,6 +7,7 @@ import { AuthService } from './auth.service'
 import { User } from 'src/users/user.entity'
 import { CreateUserDto } from 'src/users/dto/createUser.dto'
 import { Token } from './dto/token.dto'
+import { Query } from '@nestjs/common'
 
 @Resolver()
 export class AuthResolver {

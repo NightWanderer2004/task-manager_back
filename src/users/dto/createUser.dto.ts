@@ -1,5 +1,4 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { Role } from '../user.entity'
 import {
   IsEmail,
   IsString,
@@ -22,7 +21,4 @@ export class CreateUserDto {
   })
   @Field()
   password: string
-
-  @Field()
-  role: Role
 }

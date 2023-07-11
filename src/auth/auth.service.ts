@@ -30,6 +30,7 @@ export class AuthService {
   async refreshToken(refreshToken: string): Promise<Token | null> {
     const user = this.verifyRefreshToken(refreshToken)
     if (!user) throw new Error('Invalid refresh token')
+    const id = (await this.usersService.getByEmail(user['email'])).id.toString()
 
     const accessToken = this.generateAccessToken(user)
     const newRefreshToken = this.generateRefreshToken(user)
@@ -38,6 +39,7 @@ export class AuthService {
       accessToken,
       refreshToken: newRefreshToken,
       expiresIn: this.jwtService.decode(accessToken)['exp'],
+      userId: id,
     }
   }
 
@@ -51,12 +53,12 @@ export class AuthService {
 
   private generateAccessToken(user: User) {
     const payload = { email: user.email, sub: user.id }
-    return this.jwtService.sign(payload, { expiresIn: '1h' })
+    return this.jwtService.sign(payload, { expiresIn: '30m' })
   }
 
   private generateRefreshToken(user: User) {
     const payload = { email: user.email, sub: user.id }
-    return this.jwtService.sign(payload, { expiresIn: '1d' })
+    return this.jwtService.sign(payload, { expiresIn: '5h' })
   }
 
   async login(loginUser: LoginUser): Promise<LoginResponse | null> {
@@ -64,7 +66,8 @@ export class AuthService {
     if (user) {
       const { password, ...rest } = user
       return {
-        token: this.jwtService.sign({ email: user.id, sub: user.id }),
+        token: this.generateAccessToken(user),
+        refreshToken: this.generateRefreshToken(user),
         user: rest,
       }
     }

@@ -42,4 +42,10 @@ export class UsersResolver {
   async createUser(@Args('input') createUserDto: CreateUserDto): Promise<User> {
     return await this.usersService.createUser(createUserDto)
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => String)
+  async checkAccess(): Promise<string> {
+    return 'Success'
+  }
 }

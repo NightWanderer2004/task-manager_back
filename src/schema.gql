@@ -29,12 +29,12 @@ type User {
   id: ID!
   email: String!
   password: String
-  role: String!
   categories: [Category!]!
 }
 
 type LoginResponse {
   token: String!
+  refreshToken: String!
   user: User!
 }
 
@@ -42,14 +42,17 @@ type Token {
   accessToken: String!
   refreshToken: String!
   expiresIn: Int!
+  userId: String
 }
 
 type Query {
   users: [User!]!
   user(id: Float!): User!
+  checkAccess: String!
   categories: [Category!]!
   category(id: Float!): Category!
   tasks: [Task!]!
+  tasksByCategoryId(id: Float!): [Task!]!
 }
 
 type Mutation {
@@ -68,7 +71,6 @@ type Mutation {
 input CreateUserDto {
   email: String!
   password: String!
-  role: String!
 }
 
 input CreateCategoryDto {
